@@ -1,0 +1,9 @@
+# Never commit third-party binaries or game files
+*.msi
+*.tar.xz
+*.app/
+*.part
+
+# Local noise
+.DS_Store
+*.log
