@@ -24,10 +24,11 @@ Next on the new Mac:
 | Mac | macOS | Date | Tester | Result |
 |---|---|---|---|---|
 | MacBook Pro M2 Pro | 27.2 | 2026-11-18 | maintainer | in progress |
+| Mac mini M4 | 15.7.7 | 2026-11-18 | maintainer | install passed; orbiter runs on DXMT |
 
 ## 1. Install (Required)
 
-- [ ] `./install.sh` on a Mac with no previous wrapper completes all steps
+- [x] `./install.sh` on a Mac with no previous wrapper completes all steps (Mac mini M4, macOS 15.7.7)
 - [ ] `--msi` with a local installer works
 - [x] Re-running uses the cached template and engine ("already downloaded")
 - [x] Refuses to overwrite an existing app
@@ -38,10 +39,10 @@ Next on the new Mac:
 
 ## 2. Game (Required)
 
-- [ ] Full download completes
-- [ ] Log in to an account
-- [ ] Orbiter loads
-- [ ] One full mission, with audio
+- [x] Full download completes
+- [x] Log in to an account
+- [x] Orbiter loads
+- [ ] One full mission, with audio (mission passed on DXMT; audio not checked yet)
 - [ ] Alt-tab, fullscreen and windowed modes, resolution change
 - [ ] Quit and reopen; game update through the launcher
 
@@ -49,7 +50,7 @@ Record for each backend:
 
 | Backend | DirectX | Launches | Avg FPS (settings) | Stutter | Crashes | Notes |
 |---|---|---|---|---|---|---|
-| DXMT | 11 | | | | | |
+| DXMT | 11 | yes | 60–90 orbiter (Medium, 1080p, M4 10-core GPU); capped at 60 in a mission | rare: 1 shader upload (26 ms) in a 4-min mission | none | Mission: Weekly Ayatan hunt (Orokin Derelict). Streaming averaged 8.2 ms/frame mid-mission. 60 Hz display |
 | D3DMetal | 11 | | | | | |
 | D3DMetal | 12 | | | | | |
 
@@ -67,6 +68,7 @@ Record for each backend:
 
 - [ ] Why the launcher installed the game in `C:\windows\Warframe` and not in
       `C:\Program Files\Warframe`, and whether the script should preset the folder.
+      Same result on the Mac mini M4, so it is the launcher's default under Wine, not a one-off.
 - [ ] Which backend gives the best result, to choose the default.
 - [ ] Can the launcher's DirectX setting be preset by the script?
 - [ ] Is the `+loaddll` Wine debug channel in the template worth turning off for performance?
@@ -74,9 +76,9 @@ Record for each backend:
 ## 5. Before publishing
 
 - [x] Choose the repository name (`Javiergptrd/warframe-macos-wrapper`, private for now)
-- [ ] Decide whether to make the repository public
+- [x] Decide whether to make the repository public (public since 2026-11-18)
 - [ ] Remove the "work in progress" banner from both READMEs
 - [ ] Update `WFW_VERSION` in `lib/common.sh` and `CHANGELOG.md`
-- [ ] Check that pinned template/engine URLs and hashes still resolve
+- [x] Check that pinned template/engine URLs and hashes still resolve (2026-11-18, install on M4)
 - [ ] Review the README disclaimer and THIRD_PARTY.md
 - [ ] Tag the release (`v0.1.0`) and attach the source zip only (no binaries)

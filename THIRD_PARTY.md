@@ -14,4 +14,16 @@ their authors at install time, on the user's own Mac.
 | D3DMetal | Apple Inc. | Apple license (Game Porting Toolkit); not for commercial ports | Bundled in the Sikarugir template; only enabled by the user |
 | Warframe, its installer and launcher | Digital Extremes Ltd. | Proprietary; Warframe is a trademark of Digital Extremes | Downloaded from `content.warframe.com` and the official launcher |
 
+## Optional integrations
+
+| Tool | Author | License | How it is used |
+|---|---|---|---|
+| Mole | tw93 | GPL-3.0 | Not downloaded. If it is already installed, `install.sh` adds the wrapper's paths to its cleanup whitelist |
+
+## Tools used to make this project
+
+| Tool | Author | Use |
+|---|---|---|
+| Claude Code | Anthropic | AI coding assistant used to write and test the scripts and documentation, directed by the maintainer |
+
 This project is not affiliated with any of the parties above.

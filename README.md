@@ -9,9 +9,15 @@ engine built from CodeWeavers' open-source CrossOver code.
 
 [Leer en español](README.es.md)
 
-> **Status: work in progress, not released.** The wrapper build, the Warframe
-> installer and the launcher download work on an M2 Pro with macOS 27.2. The game
-> itself has not been played through this setup yet. See [docs/TESTING.md](docs/TESTING.md).
+> **Status: work in progress, not released.** The full install works on an M2 Pro
+> (macOS 27.2) and an M4 Mac mini (macOS 15.7.7). On the M4, the game logs in, loads
+> the orbiter and completes missions with DXMT at a steady 60 FPS on Medium settings.
+> D3DMetal is not play-tested yet. See [docs/TESTING.md](docs/TESTING.md).
+
+> **Made with AI.** The scripts and documentation in this repository were written
+> with the help of an AI coding assistant ([Claude Code](https://claude.com/claude-code)
+> by Anthropic), directed and tested on real Macs by the maintainer. Review the scripts
+> before running them, as you would with any code from the internet.
 
 ## What it does
 
@@ -70,6 +76,7 @@ tools/renderer.sh dxmt
 
 ```bash
 tools/status.sh              # engine, backend, download size, last launcher log lines
+tools/watch-log.sh           # follow the game's log live while playing (--all for every line)
 ./uninstall.sh               # moves Warframe.app (and the game data inside it) to the Trash
 ./uninstall.sh --delete      # deletes it permanently instead
 ```
@@ -92,3 +99,15 @@ inside the app, and [docs/TESTING.md](docs/TESTING.md) for the release checklist
 The scripts in this repository are MIT licensed ([LICENSE](LICENSE)). Third-party
 components are downloaded from their authors at install time; see
 [THIRD_PARTY.md](THIRD_PARTY.md).
+
+This project only exists thanks to the work of others:
+
+- **[Sikarugir](https://github.com/Sikarugir-App)** (Gcenx and contributors), for the
+  wrapper template and the Wine engines this project builds on.
+- **[CodeWeavers](https://www.codeweavers.com/)**, for publishing the CrossOver source
+  code, and the **[Wine project](https://www.winehq.org/)**.
+- **[DXMT](https://github.com/3Shain/dxmt)** by 3Shain, the open-source DirectX 11 → Metal translator.
+- **Apple**, for D3DMetal (Game Porting Toolkit), and the **Khronos Group** for MoltenVK.
+- **[Mole](https://github.com/tw93/Mole)** by tw93, whose cleanup whitelist the installer respects.
+- **Digital Extremes**, for Warframe.
+- **[Claude Code](https://claude.com/claude-code)** by Anthropic, the AI assistant used to write the scripts and docs.

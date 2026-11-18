@@ -11,6 +11,8 @@
 - `tools/renderer.sh`: switch between DXMT and D3DMetal.
 - `tools/status.sh`: engine, backend, game data size and launcher log.
 - `uninstall.sh`: moves the app to the Trash (or `--delete`), optional cache purge.
+- `tools/watch-log.sh`: follows the game's `EE.log` live, filtered to graphics,
+  settings, warnings, errors and load stalls (`--all` for every line).
 - Mole whitelist integration so cleanups never touch the wrapper or Wine's temp files.
 - Documentation: README (English and Spanish), how it works, testing checklist,
-  third-party notices.
+  third-party notices, credits and a notice that the project was made with AI assistance.
