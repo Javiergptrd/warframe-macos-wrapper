@@ -97,7 +97,7 @@ right exclusions automatically.
 ## How it works
 
 See [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) for the full process and the layout
-inside the app, and [docs/TESTING.md](docs/TESTING.md) for the release checklist.
+inside the app, and [docs/TESTING.md](docs/TESTING.md) for the test checklist.
 
 ## Credits and licenses
 

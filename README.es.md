@@ -98,7 +98,7 @@ las exclusiones solo.
 ## Cómo funciona
 
 Lee [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) para el proceso completo y
-[docs/TESTING.md](docs/TESTING.md) para la lista de pruebas antes de cada versión.
+[docs/TESTING.md](docs/TESTING.md) para la lista de pruebas.
 
 ## Créditos y licencias
 

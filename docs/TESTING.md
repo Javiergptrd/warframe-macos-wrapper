@@ -1,23 +1,6 @@
-# Testing and release checklist
+# Testing checklist
 
 No release (v0.1.0) until every **Required** item passes on a real Mac.
-
-## Where we left off (2026-11-18)
-
-Work moved to another Mac for disk-space reasons. On the first Mac:
-
-- A wrapper built **by hand** with the same steps as `install.sh` installed the official
-  `Warframe.msi`, and the launcher was downloading the game (13 GB done, 5 MB/s) with DXMT.
-- `install.sh --skip-installer`, `tools/renderer.sh`, `tools/status.sh` and
-  `uninstall.sh --delete` were tested on a throwaway copy.
-- The full `./install.sh` (with the Warframe installer) has **not** been run end to end.
-
-Next on the new Mac:
-
-1. `./install.sh --launch` from a clean state, and tick section 1.
-2. Let the launcher finish the download, then play-test both backends (section 2).
-3. Answer the open questions in section 4, update docs and defaults.
-4. Cut v0.1.0 (section 5).
 
 ## Test machines
 
@@ -62,14 +45,14 @@ Record for each backend:
 | DXMT | 11 | yes | Plains of Eidolon open world: streaming avg 7.9 ms/frame, 13 of 103 batches over 16.7 ms, none over 25 ms | only during loading screens (up to 0.5 s) | none | 2026-11-19, MSI 3440×1440 @144 Hz ultrawide, ~20 bounty stages + Kronia Relay + Lua quest. Game rendered at **1720×720** (see section 4) |
 | DXMT + Retina | 11 | yes | 3440×1440 native, Medium: mission streaming avg 22.7 ms/frame, frames mostly 28–34 ms (~30–35 FPS) | frequent | none | 2026-11-19, quest "The Relic" (Earth). Sharper but ~2.9× the frame cost of 1720×720 (7.9 ms). Next: in-game FSR upscaling |
 | DXMT + Retina + FSR 3 Quality | 11 | yes | 3440×1440 output, Plains of Eidolon: avg 23.2 ms/frame (median 23), 26 of 33 batches over 16.7 ms | frequent | none | 2026-11-19. No gain over native Retina (22.7 ms); small sample. 1720×720 without upscaling: 7.9 ms on the same map |
-| D3DMetal | 11 | | | | | |
-| D3DMetal | 12 | | | | | |
+| D3DMetal | 11 | yes | Quest mission on Cetus and the Plains (`CetusInvasion`, 4-player squad): streaming avg 11.9 ms/frame (median 7), 20 of 61 batches over 16.7 ms, 9 over 25 ms, none over 50 ms. Orbiter avg 12.8 ms | one 1.6 s `Present()` stall in the orbiter, otherwise loading only | none | 2026-11-20, 1720×720 Borderless, Medium, frame cap 144 (DXMT runs were capped at 60). Confirmed loaded: `D3DMetal.framework`, D3DMetal `d3d11.dll`/`dxgi.dll`; the game sees an "AMD Compatibility Mode" adapter. Different scene from the DXMT Plains run, so compare loosely |
+| D3DMetal | 12 | yes | Plains of Eidolon, **first run (cold shader cache)**: streaming avg 23.4 ms/frame (median 17), 28 of 52 batches over 16.7 ms, 25 over 25 ms, 2 over 50 ms | frequent: 347 shader pipelines (PSOs) compiled while playing (8.4 s in total, up to 105 ms each); 4 "Draw needed active-prefetch PSO" stalls of 20–120 ms | none | 2026-11-20, 1720×720 Borderless, frame cap 144. Confirmed `ID3D12Device2`, "PSO Cache Enabled". The tester felt the image looked better than on DirectX 11; the logs show no setting that differs by API. Second Plains visit in the same session (warm cache): avg 17.6 ms/frame (median 9), 7 of 20 batches over 16.7 ms, 6 over 25 ms, 1 over 50 ms; 112 PSOs compiled (2.3 s, vs 8.4 s), no draw stalls. Whether the cache survives a game restart is not tested yet |
 
 ## 3. Tools (Required)
 
 - [x] `tools/status.sh` shows engine, backend, game data size and launcher log
 - [x] `tools/renderer.sh d3dmetal` / `dxmt` switch the setting
-- [ ] The switched backend is really used on the next launch
+- [x] The switched backend is really used on the next launch (D3DMetal, 2026-11-20: `D3DMetal.framework` mapped in `Warframe.x64.exe`)
 - [ ] `./uninstall.sh` moves the app to the Trash
 - [x] `./uninstall.sh --delete` removes it
 - [x] `./uninstall.sh` refuses an app not built by `install.sh` without `--force`
@@ -81,6 +64,8 @@ Record for each backend:
       `C:\Program Files\Warframe`, and whether the script should preset the folder.
       Same result on the Mac mini M4, so it is the launcher's default under Wine, not a one-off.
 - [ ] Which backend gives the best result, to choose the default.
+      So far on the M4 (2026-11-20): DXMT 7.9 ms/frame on the Plains; D3DMetal DX11 11.9 ms (quest mission);
+      D3DMetal DX12 23.4 ms on a cold shader cache and 17.6 ms on a warm one. DXMT stays the default for now.
 - [ ] Can the launcher's DirectX setting be preset by the script?
 - [ ] **Retina / HiDPI:** on a scaled display (3440×1440 shown as "looks like 1720×720") the game
       only sees 1720×720 and renders at half resolution, which macOS then upscales. Wine's
@@ -101,13 +86,3 @@ Record for each backend:
 - [ ] Should `install.sh` preset `Graphics.WindowMode=MODE_BORDERLESS` in `EE.cfg`, and does
       exclusive fullscreen work on D3DMetal?
 - [ ] Is the `+loaddll` Wine debug channel in the template worth turning off for performance?
-
-## 5. Before publishing
-
-- [x] Choose the repository name (`Javiergptrd/warframe-macos-wrapper`, private for now)
-- [x] Decide whether to make the repository public (public since 2026-11-18)
-- [ ] Remove the "work in progress" banner from both READMEs
-- [ ] Update `WFW_VERSION` in `lib/common.sh` and `CHANGELOG.md`
-- [x] Check that pinned template/engine URLs and hashes still resolve (2026-11-18, install on M4)
-- [ ] Review the README disclaimer and THIRD_PARTY.md
-- [ ] Tag the release (`v0.1.0`) and attach the source zip only (no binaries)
