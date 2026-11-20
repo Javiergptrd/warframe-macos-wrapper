@@ -124,9 +124,34 @@ wine_env() {
 }
 run_wine()        { wine_env "$WINE_BIN/wine" "$@"; }
 wineserver_wait() { wine_env "$WINE_BIN/wineserver" -w; }
+
+# --- Game and launcher settings --------------------------------------------------
+# The launcher keeps its DirectX choice in the registry: GraphicsAPI 0 = DirectX 11,
+# 1 = DirectX 12. DXMT only supports DirectX 11. D3DMetal does both; DirectX 12 was
+# faster on an M4 once its shader cache was built (see docs/TESTING.md).
+launcher_dx_for() {
+  case "$1" in d3dmetal) echo 1 ;; *) echo 0 ;; esac
+}
+set_launcher_dx() {
+  run_wine reg add 'HKCU\Software\Digital Extremes\Warframe\Launcher' \
+    /v GraphicsAPI /t REG_DWORD /d "$1" /f >/dev/null 2>&1 || return 1
+  wineserver_wait >/dev/null 2>&1 || true
+}
+
+# Exclusive fullscreen loops on DXMT and minimizes on every Cmd+Tab on D3DMetal,
+# so start in borderless fullscreen. The game creates EE.cfg on its first run and
+# fills in every setting not given, so only write a starter file if none exists.
+preset_borderless() {
+  local dir="$PFX/drive_c/users/Sikarugir/AppData/Local/Warframe"
+  [ -f "$dir/EE.cfg" ] && return 0
+  mkdir -p "$dir"
+  printf '+nowarning\r\n+version=5\r\n\r\n[Windows_Config,/EE/Types/Base/Config]\r\nGraphics.WindowMode=MODE_BORDERLESS\r\n' >"$dir/EE.cfg"
+}
 wineserver_kill() { wine_env "$WINE_BIN/wineserver" -k >/dev/null 2>&1 || true; }
 
-app_is_running() { pgrep -f "$APP_CONTENTS/" >/dev/null 2>&1; }
+# Match the app's own Wine processes (wineserver runs whenever the app does), not
+# any process with a path inside the app, such as tools/watch-log.sh's tail.
+app_is_running() { pgrep -f "$APP_CONTENTS/SharedSupport/wine/" >/dev/null 2>&1; }
 
 # Launcher.exe lives in the Windows user's profile; the user folder name depends
 # on the engine ("crossover", renamed to "Sikarugir" by the template).

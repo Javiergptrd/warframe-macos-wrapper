@@ -70,7 +70,8 @@ Record for each backend:
 - [ ] Which backend gives the best result, to choose the default.
       So far on the M4 (2026-11-20): DXMT 7.9 ms/frame on the Plains; D3DMetal DX11 11.9 ms (quest mission);
       D3DMetal DX12 23.4 ms on a cold shader cache and 17.6 ms on a warm one. DXMT stays the default for now.
-- [ ] Can the launcher's DirectX setting be preset by the script?
+- [x] Can the launcher's DirectX setting be preset by the script? Yes: registry `HKCU\Software\Digital Extremes\Warframe\Launcher`
+      `GraphicsAPI` (0 = DirectX 11, 1 = DirectX 12). `install.sh` and `tools/renderer.sh` now set it (2026-11-20).
 - [x] **Retina / HiDPI:** on a scaled display (3440×1440 shown as "looks like 1720×720") the game
       only sees 1720×720 and renders at half resolution, which macOS then upscales. Wine's
       `HKCU\Software\Wine\Mac Driver` `RetinaMode="y"` is not set in the prefix. Test setting it
@@ -91,4 +92,6 @@ Record for each backend:
       exclusive fullscreen work on D3DMetal?
       D3DMetal: fullscreen works but minimizes on every Cmd+Tab (see section 2); DXMT: it loops. Borderless
       works on both, so presetting it looks right.
+      Done 2026-11-20: `install.sh` writes a starter `EE.cfg` with Borderless if none exists. Not yet tested on a
+      fresh install (the game must accept the partial file and fill in the rest).
 - [ ] Is the `+loaddll` Wine debug channel in the template worth turning off for performance?

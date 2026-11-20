@@ -100,12 +100,18 @@ Sikarugir's launcher also accepts `WSS-winecfg`, `WSS-regedit`, `WSS-cmd`,
 
 ## Known notes
 
-- With DXMT (DirectX 11) there is no persistent shader cache, so the first runs stutter.
+- DXMT keeps its own shader cache outside the app, in macOS's per-user cache folder
+  (`$(getconf DARWIN_USER_CACHE_DIR)dxmt/Warframe.x64.exe/`, about 170 MB after a few sessions), so
+  only the first runs stutter. Cache cleaners may delete it (it is rebuilt), and `uninstall.sh` leaves it.
 - On this test Mac the launcher put the game in `C:\windows\Warframe\Downloaded\Public`,
   not in the proposed `C:\Program Files\Warframe`. Still under investigation (see TESTING.md).
 - Apple has said Rosetta 2 stays fully available through macOS 27, with limited support
   for older games afterwards. Future macOS versions may affect this approach.
 - Exclusive fullscreen fails with DXMT (800×600, focus-loss loop). Use Borderless or Windowed.
+  `install.sh` writes a starter `EE.cfg` with `Graphics.WindowMode=MODE_BORDERLESS` if the game has
+  not created one yet. On D3DMetal exclusive fullscreen works but minimizes on every Cmd+Tab.
+- The launcher's DirectX choice is the registry value `HKCU\Software\Digital Extremes\Warframe\Launcher`
+  `GraphicsAPI` (0 = DirectX 11, 1 = DirectX 12). `install.sh` and `tools/renderer.sh` set it to match the backend.
 - Metal HUD position: the wrapper's `CLI Custom Commands` key in `Info.plist` runs before Wine
   starts, so `export MTL_HUD_ALIGNMENT=…` there reaches the game. On macOS 15.7 the documented
   values (`topright`, `bottomleft`, …) are ignored; numbers work, and `20` puts the HUD on the

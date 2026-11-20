@@ -67,8 +67,8 @@ Useful options (`./install.sh --help` lists all):
 
 | Backend | DirectX | Notes |
 |---|---|---|
-| **DXMT** (default) | 11 | Open source. Select **DirectX 11** in the launcher settings. Some stutter while shaders compile. |
-| **D3DMetal** | 11 and 12 | Apple's translator, bundled in Sikarugir's template. DirectX 12 keeps a shader cache. |
+| **DXMT** (default) | 11 | Open source and the fastest on an M4 Mac mini. The launcher is set to **DirectX 11** for you. Some stutter while shaders compile on the first runs; DXMT caches them after. |
+| **D3DMetal** | 11 and 12 | Apple's translator, bundled in Sikarugir's template. `tools/renderer.sh d3dmetal` sets the launcher to **DirectX 12**, which keeps a shader cache: slow on the first run, close to DXMT after. |
 
 ```bash
 tools/renderer.sh            # show the current backend

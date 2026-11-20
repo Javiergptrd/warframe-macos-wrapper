@@ -8,7 +8,10 @@
   creates the Wine prefix, installs the official Warframe launcher silently and sets
   the app to open it. Options: `--name`, `--dir`, `--msi`, `--renderer`,
   `--skip-installer`, `--launch`, `--yes`.
-- `tools/renderer.sh`: switch between DXMT and D3DMetal.
+- `tools/renderer.sh`: switch between DXMT and D3DMetal. It also sets the launcher's DirectX
+  version to match (DirectX 11 for DXMT, DirectX 12 for D3DMetal).
+- `install.sh` presets the launcher's DirectX version and starts the game in borderless
+  fullscreen (exclusive fullscreen loops on DXMT).
 - `tools/status.sh`: engine, backend, game data size and launcher log.
 - READMEs: screenshot of the launcher running on macOS (`docs/images/launcher.png`).
 - `uninstall.sh`: moves the app to the Trash (or `--delete`), optional cache purge.

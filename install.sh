@@ -169,6 +169,12 @@ fi
 step "Applying settings"
 set_renderer "$RENDERER"
 ok "Graphics: $(renderer_label "$RENDERER")"
+if set_launcher_dx "$(launcher_dx_for "$RENDERER")" >>"$INSTALL_LOG" 2>&1; then
+  ok "Launcher set to DirectX $([ "$(launcher_dx_for "$RENDERER")" = 1 ] && echo 12 || echo 11)"
+else
+  warn "Could not preset the launcher's DirectX setting; choose it in the launcher settings."
+fi
+preset_borderless && ok "Game starts in borderless fullscreen"
 mole_protect
 
 echo
@@ -179,7 +185,8 @@ if [ "$SKIP_INSTALLER" = 0 ]; then
 Next:
   1. Open $APP_NAME.app (Finder → your home folder → Applications → Sikarugir).
   2. In the launcher, accept the default install folder and let it download the game.
-  3. In the launcher settings, choose DirectX 11 when using DXMT.
+  3. The launcher is already set to the right DirectX version and the game to
+     borderless fullscreen. Avoid exclusive fullscreen (it loops on DXMT).
 
 Switch graphics backend:  tools/renderer.sh d3dmetal   (or dxmt)
 Check progress and logs:  tools/status.sh

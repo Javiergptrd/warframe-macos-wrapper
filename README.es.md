@@ -68,8 +68,8 @@ Opciones útiles (`./install.sh --help` muestra todas):
 
 | Opción | DirectX | Notas |
 |---|---|---|
-| **DXMT** (por defecto) | 11 | Código abierto. Elige **DirectX 11** en la configuración del launcher. Puede trabarse un poco mientras compila shaders. |
-| **D3DMetal** | 11 y 12 | El traductor de Apple, incluido en la plantilla de Sikarugir. DirectX 12 guarda caché de shaders. |
+| **DXMT** (por defecto) | 11 | Código abierto y el más rápido en un Mac mini M4. El launcher queda en **DirectX 11** automáticamente. Puede trabarse un poco las primeras veces mientras compila shaders. |
+| **D3DMetal** | 11 y 12 | El traductor de Apple, incluido en la plantilla de Sikarugir. `tools/renderer.sh d3dmetal` pone el launcher en **DirectX 12**, que guarda caché de shaders: lento la primera vez, cerca de DXMT después. |
 
 ```bash
 tools/renderer.sh            # ver cuál está activo

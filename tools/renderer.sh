@@ -41,9 +41,13 @@ fi
 
 set_renderer "$ACTION"
 ok "Graphics set to $(renderer_label "$ACTION")"
+DX="$(launcher_dx_for "$ACTION")"
+DX_LABEL="DirectX $([ "$DX" = 1 ] && echo 12 || echo 11)"
 if app_is_running; then
-  warn "$APP_NAME is running. Quit it and open it again for the change to apply."
-fi
-if [ "$ACTION" = "dxmt" ]; then
-  note "In the launcher settings, make sure DirectX 11 is selected."
+  # The launcher would overwrite the registry value when it exits.
+  warn "$APP_NAME is running. Quit it, run this again, then open it for the change to apply."
+elif set_launcher_dx "$DX"; then
+  ok "Launcher set to $DX_LABEL"
+else
+  note "In the launcher settings, select $DX_LABEL."
 fi
