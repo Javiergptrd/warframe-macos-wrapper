@@ -9,6 +9,10 @@ un motor de Wine compilado del código abierto de CrossOver de CodeWeavers.
 
 [Read in English](README.md)
 
+![El launcher de Warframe funcionando en macOS con el wrapper](docs/images/launcher.png)
+
+*El launcher de Windows en un Mac mini M4 (macOS 15.7.7). Arte © Digital Extremes.*
+
 > **Estado: en desarrollo, sin versión publicada.** La instalación completa funciona
 > en una M2 Pro (macOS 27.2) y una Mac mini M4 (macOS 15.7.7). En la M4 el juego inicia
 > sesión, carga el orbitador y completa misiones con DXMT a 60 FPS estables en calidad
@@ -77,7 +81,8 @@ tools/renderer.sh dxmt
 
 ```bash
 tools/status.sh              # motor, gráficos, tamaño descargado, últimas líneas del launcher
-tools/watch-log.sh           # sigue el registro del juego en vivo mientras juegas (--all para ver todo)
+tools/watch-log.sh           # sigue el registro del juego en vivo mientras juegas (--all para ver todo);
+                             # también guarda el registro completo, que el juego borra al iniciar
 ./uninstall.sh               # manda Warframe.app (con el juego dentro) a la Papelera
 ./uninstall.sh --delete      # lo borra para siempre
 ```

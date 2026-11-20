@@ -9,6 +9,10 @@ engine built from CodeWeavers' open-source CrossOver code.
 
 [Leer en español](README.es.md)
 
+![The Warframe launcher running on macOS through the wrapper](docs/images/launcher.png)
+
+*The Windows launcher running on a Mac mini M4 (macOS 15.7.7). Artwork © Digital Extremes.*
+
 > **Status: work in progress, not released.** The full install works on an M2 Pro
 > (macOS 27.2) and an M4 Mac mini (macOS 15.7.7). On the M4, the game logs in, loads
 > the orbiter and completes missions with DXMT at a steady 60 FPS on Medium settings.
@@ -76,7 +80,8 @@ tools/renderer.sh dxmt
 
 ```bash
 tools/status.sh              # engine, backend, download size, last launcher log lines
-tools/watch-log.sh           # follow the game's log live while playing (--all for every line)
+tools/watch-log.sh           # follow the game's log live while playing (--all for every line);
+                             # also saves the full log, which the game overwrites on each launch
 ./uninstall.sh               # moves Warframe.app (and the game data inside it) to the Trash
 ./uninstall.sh --delete      # deletes it permanently instead
 ```

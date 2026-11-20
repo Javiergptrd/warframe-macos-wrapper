@@ -10,9 +10,12 @@
   `--skip-installer`, `--launch`, `--yes`.
 - `tools/renderer.sh`: switch between DXMT and D3DMetal.
 - `tools/status.sh`: engine, backend, game data size and launcher log.
+- READMEs: screenshot of the launcher running on macOS (`docs/images/launcher.png`).
 - `uninstall.sh`: moves the app to the Trash (or `--delete`), optional cache purge.
 - `tools/watch-log.sh`: follows the game's `EE.log` live, filtered to graphics,
-  settings, warnings, errors and load stalls (`--all` for every line).
+  settings, warnings, errors and load stalls (`--all` for every line). Saves the full
+  log to `SharedSupport/Logs/EE-<date>-<time>.log` (newest 10 kept, `--no-save` to skip),
+  because the game overwrites `EE.log` on every launch.
 - Mole whitelist integration so cleanups never touch the wrapper or Wine's temp files.
 - Documentation: README (English and Spanish), how it works, testing checklist,
   third-party notices, credits and a notice that the project was made with AI assistance.

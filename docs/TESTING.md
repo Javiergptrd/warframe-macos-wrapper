@@ -42,15 +42,26 @@ Next on the new Mac:
 - [x] Full download completes
 - [x] Log in to an account
 - [x] Orbiter loads
-- [ ] One full mission, with audio (mission passed on DXMT; audio not checked yet)
-- [ ] Alt-tab, fullscreen and windowed modes, resolution change
+- [x] One full mission, with audio (DXMT)
+- [x] Alt-tab, fullscreen and windowed modes, resolution change
+      - [x] Alt-tab (Cmd+Tab) in borderless, DXMT
+      - [x] Exclusive fullscreen tested: **fails on DXMT**: it picks 800×600, loses focus, minimizes
+            and resets the display in a loop (blank screen, glitches). Use Borderless.
+            Fix: set `Graphics.WindowMode=MODE_BORDERLESS` in `EE.cfg` with the game closed.
+      - [x] Windowed mode and resolution change (DXMT, 2026-11-19): Borderless → Windowed 800×600 →
+            1720×667 → 1720×720 → Borderless, each with a clean `ResetDriver`, no graphics errors
 - [ ] Quit and reopen; game update through the launcher
+      - [x] Quit and reopen (clean shutdown, launcher restarts the game)
+      - [ ] Game update through the launcher (wait for a Warframe update)
 
 Record for each backend:
 
 | Backend | DirectX | Launches | Avg FPS (settings) | Stutter | Crashes | Notes |
 |---|---|---|---|---|---|---|
 | DXMT | 11 | yes | 60–90 orbiter (Medium, 1080p, M4 10-core GPU); capped at 60 in a mission | rare: 1 shader upload (26 ms) in a 4-min mission | none | Mission: Weekly Ayatan hunt (Orokin Derelict). Streaming averaged 8.2 ms/frame mid-mission. 60 Hz display |
+| DXMT | 11 | yes | Plains of Eidolon open world: streaming avg 7.9 ms/frame, 13 of 103 batches over 16.7 ms, none over 25 ms | only during loading screens (up to 0.5 s) | none | 2026-11-19, MSI 3440×1440 @144 Hz ultrawide, ~20 bounty stages + Kronia Relay + Lua quest. Game rendered at **1720×720** (see section 4) |
+| DXMT + Retina | 11 | yes | 3440×1440 native, Medium: mission streaming avg 22.7 ms/frame, frames mostly 28–34 ms (~30–35 FPS) | frequent | none | 2026-11-19, quest "The Relic" (Earth). Sharper but ~2.9× the frame cost of 1720×720 (7.9 ms). Next: in-game FSR upscaling |
+| DXMT + Retina + FSR 3 Quality | 11 | yes | 3440×1440 output, Plains of Eidolon: avg 23.2 ms/frame (median 23), 26 of 33 batches over 16.7 ms | frequent | none | 2026-11-19. No gain over native Retina (22.7 ms); small sample. 1720×720 without upscaling: 7.9 ms on the same map |
 | D3DMetal | 11 | | | | | |
 | D3DMetal | 12 | | | | | |
 
@@ -71,6 +82,24 @@ Record for each backend:
       Same result on the Mac mini M4, so it is the launcher's default under Wine, not a one-off.
 - [ ] Which backend gives the best result, to choose the default.
 - [ ] Can the launcher's DirectX setting be preset by the script?
+- [ ] **Retina / HiDPI:** on a scaled display (3440×1440 shown as "looks like 1720×720") the game
+      only sees 1720×720 and renders at half resolution, which macOS then upscales. Wine's
+      `HKCU\Software\Wine\Mac Driver` `RetinaMode="y"` is not set in the prefix. Test setting it
+      (game sharper, FPS lower) and decide whether `install.sh` should set it or offer it as a tool.
+      Tested 2026-11-19: with it, the game renders at 3440×1440 (confirmed in EE.log) but drops to
+      ~30–35 FPS on Medium with DXMT on an M4. Try it with in-game FSR before deciding.
+      Presetting FSR by writing `Graphics.UpscaleMethod=UM_FSR3` to `EE.cfg` does not stick: the game
+      creates the FSR 3 context, logs "Upscaling settings out of sync" and falls back to
+      `UM_DISABLED`. FSR must be set in Options → Display. (Upscalers in this build: FSR 3, DLSS, MFSR.)
+      FSR 3 Quality set in the menu (confirmed in EE.log) did not lower frame cost on the Plains (23.2 ms
+      vs 7.9 ms at 1720×720), so on an M4 Retina mode costs ~3× and FSR does not win it back.
+      **Decision (2026-11-19):** `install.sh` keeps Retina mode off by default. A future optional tool
+      could turn it on for stronger GPUs (M-series Pro/Max), to be tested there.
+      Retina, no upscaling, Corpus ship quest "The Final Test": avg 14.5 ms/frame (lighter scene than "The Relic").
+- [x] `EE.log` is overwritten on every launch, so a session's log is lost when the game restarts.
+      `tools/watch-log.sh` now saves the full log to `SharedSupport/Logs/EE-<date>-<time>.log`.
+- [ ] Should `install.sh` preset `Graphics.WindowMode=MODE_BORDERLESS` in `EE.cfg`, and does
+      exclusive fullscreen work on D3DMetal?
 - [ ] Is the `+loaddll` Wine debug channel in the template worth turning off for performance?
 
 ## 5. Before publishing

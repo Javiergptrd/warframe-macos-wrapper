@@ -78,6 +78,8 @@ Logs worth knowing:
 
 - `Contents/SharedSupport/Logs/wfw-install.log`: the script's own log.
 - `Contents/SharedSupport/Logs/warframe-msi.log`: the Warframe installer log.
+- `Contents/SharedSupport/Logs/EE-<date>-<time>.log`: full game logs saved by
+  `tools/watch-log.sh` (the game itself overwrites `EE.log` on every launch).
 - `…/prefix/drive_c/users/Sikarugir/AppData/Local/Warframe/Launcher.log`: the launcher
   log, including download progress.
 
@@ -103,3 +105,8 @@ Sikarugir's launcher also accepts `WSS-winecfg`, `WSS-regedit`, `WSS-cmd`,
   not in the proposed `C:\Program Files\Warframe`. Still under investigation (see TESTING.md).
 - Apple has said Rosetta 2 stays fully available through macOS 27, with limited support
   for older games afterwards. Future macOS versions may affect this approach.
+- Exclusive fullscreen fails with DXMT (800×600, focus-loss loop). Use Borderless or Windowed.
+- Metal HUD position: the wrapper's `CLI Custom Commands` key in `Info.plist` runs before Wine
+  starts, so `export MTL_HUD_ALIGNMENT=…` there reaches the game. On macOS 15.7 the documented
+  values (`topright`, `bottomleft`, …) are ignored; numbers work, and `20` puts the HUD on the
+  right edge about halfway down. No value moved it to the left or bottom edge.
